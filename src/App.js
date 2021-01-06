@@ -1,9 +1,28 @@
+import React, { useState } from 'react';
 import './App.css';
+import Converter from './components/Converter';
 
-function App() {
+const styles = {
+  inputContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  card: {
+    width: 'auto'
+  },
+  container: {
+    paddingTop: '20%',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+}
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">Yo</header>
+    <div>
+      <div style={styles.container}>
+        <Converter />
+      </div>
     </div>
   );
 }
