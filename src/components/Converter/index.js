@@ -54,6 +54,11 @@ const Converter = () => {
     const [result, setResult] = useState(0);
     const [input, setInput] = useState('');
   
+    const computeResult = () => {
+        console.log(currencies);
+        setResult(result + 1);
+    }
+
     useEffect(() => {
         const fetchCurrencies = async () => {
             const response = await axios.get(`?base=USD`);
@@ -67,9 +72,10 @@ const Converter = () => {
         <Card.Content>
             <div style={styles.inputContainer}>
                 <Input
+                    onChange={() => computeResult()}
                     value={input}
                     error={isNaN(input)}
-                    onChange={(target, event) => { setInput(event.value); }}
+                    onChange={(target, event) => { setInput(event.value); }} //eslint-disable-line
                     label={
                         <Dropdown
                             defaultValue={options[0].value}
