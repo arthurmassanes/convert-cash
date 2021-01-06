@@ -47,7 +47,7 @@ const Converter = () => {
     }
     useEffect(() => {
         computeResult();
-    }, [base, input, target, currencies]);
+    }, [base, input, target, currencies]); //eslint-disable-line
 
     useEffect(() => {
         computeResult();
@@ -61,7 +61,7 @@ const Converter = () => {
             setIsLoading(false);
         }
         fetchCurrencies();
-    }, [base]);
+    }, [base]); //eslint-disable-line
     return (<Card style={styles.card}>
         {isLoading ? <Loader active /> : <Card.Content>
             <div style={styles.inputContainer}>
