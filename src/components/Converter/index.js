@@ -17,6 +17,8 @@ const styles = {
     card: {
       width: 'auto',
       minHeight: 100,
+      borderRadius: 40,
+      padding: 80,
       minWidth: 200,
     },
     container: {
@@ -42,7 +44,7 @@ const Converter = () => {
         if (currencies?.rates && isValidInput()) {
             console.log(currencies, base, target);
             const computedResult = input * currencies.rates[target];
-            setResult(`${base} ${input || 0} = ${target} ${computedResult.toFixed(2)}`);
+            setResult(`${base} ${input || 0} = ${target} ${computedResult.toFixed(2) || 0}`);
         }
     }
     useEffect(() => {
@@ -65,7 +67,7 @@ const Converter = () => {
     return (<Card style={styles.card}>
         {isLoading ? <Loader active /> : <Card.Content>
         <Card.Header style={{ paddingBottom: 10 }}>currency converter by arthur massanes</Card.Header>
-        <Card.Meta>Select an amount, a base and a target to convert a currency</Card.Meta>
+        <Card.Meta>select an amount, a base and a target to convert a currency</Card.Meta>
         <Divider />
             <div style={styles.inputContainer}>
                 <Input
