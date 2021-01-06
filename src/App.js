@@ -12,7 +12,7 @@ const styles = {
     width: 'auto'
   },
   container: {
-    paddingTop: '20%',
+    paddingTop: '10%',
     display: 'flex',
     justifyContent: 'center',
   },

@@ -42,7 +42,6 @@ const Converter = () => {
     }
     const computeResult = () => {
         if (currencies?.rates && isValidInput()) {
-            console.log(currencies, base, target);
             const computedResult = input * currencies.rates[target];
             setResult(`${base} ${input || 0} = ${target} ${computedResult.toFixed(2) || 0}`);
         }
@@ -59,7 +58,6 @@ const Converter = () => {
             setCurrencies(response.data);
             setOptions(Object.keys(response.data.rates).map(key => ({ value: key, text: key })));
             setBase(base);
-            console.log(options);
             setIsLoading(false);
         }
         fetchCurrencies();
