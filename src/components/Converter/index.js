@@ -5,6 +5,7 @@ import {
     Divider,
     Icon,
     Input,
+    Loader,
 } from 'semantic-ui-react';
 import axios from 'axios';
 
@@ -14,7 +15,9 @@ const styles = {
       flexDirection: 'row',
     },
     card: {
-      width: 'auto'
+      width: 'auto',
+      minHeight: 100,
+      minWidth: 200,
     },
     container: {
       paddingTop: '20%',
@@ -23,62 +26,53 @@ const styles = {
     },
 }
 
-const options = [
-    { key: 'af', value: 'af', flag: 'af', text: 'Afghanistan' },
-    { key: 'ax', value: 'ax', flag: 'ax', text: 'Aland Islands' },
-    { key: 'al', value: 'al', flag: 'al', text: 'Albania' },
-    { key: 'dz', value: 'dz', flag: 'dz', text: 'Algeria' },
-    { key: 'as', value: 'as', flag: 'as', text: 'American Samoa' },
-    { key: 'ad', value: 'ad', flag: 'ad', text: 'Andorra' },
-    { key: 'ao', value: 'ao', flag: 'ao', text: 'Angola' },
-    { key: 'ai', value: 'ai', flag: 'ai', text: 'Anguilla' },
-    { key: 'ag', value: 'ag', flag: 'ag', text: 'Antigua' },
-    { key: 'ar', value: 'ar', flag: 'ar', text: 'Argentina' },
-    { key: 'am', value: 'am', flag: 'am', text: 'Armenia' },
-    { key: 'aw', value: 'aw', flag: 'aw', text: 'Aruba' },
-    { key: 'au', value: 'au', flag: 'au', text: 'Australia' },
-    { key: 'at', value: 'at', flag: 'at', text: 'Austria' },
-    { key: 'az', value: 'az', flag: 'az', text: 'Azerbaijan' },
-    { key: 'bs', value: 'bs', flag: 'bs', text: 'Bahamas' },
-    { key: 'bh', value: 'bh', flag: 'bh', text: 'Bahrain' },
-    { key: 'bd', value: 'bd', flag: 'bd', text: 'Bangladesh' },
-    { key: 'bb', value: 'bb', flag: 'bb', text: 'Barbados' },
-    { key: 'by', value: 'by', flag: 'by', text: 'Belarus' },
-    { key: 'be', value: 'be', flag: 'be', text: 'Belgium' },
-    { key: 'bz', value: 'bz', flag: 'bz', text: 'Belize' },
-    { key: 'bj', value: 'bj', flag: 'bj', text: 'Benin' },
-];
-
 const Converter = () => {
+    const [options, setOptions] = useState([]);
     const [currencies, setCurrencies] = useState({});
-    const [result, setResult] = useState(0);
+    const [base, setBase] = useState('USD');
+    const [target, setTarget] = useState('EUR');
+    const [result, setResult] = useState(`${base} 0 = ${target} 0.00`);
+    const [isLoading, setIsLoading] = useState(true);
     const [input, setInput] = useState('');
   
-    const computeResult = () => {
-        console.log(currencies);
-        setResult(result + 1);
+    const isValidInput = () => {
+        return (!isNaN(input));
     }
+    const computeResult = () => {
+        if (currencies?.rates && isValidInput()) {
+            console.log(currencies, base, target);
+            const computedResult = input * currencies.rates[target];
+            setResult(`${base} ${input || 0} = ${target} ${computedResult.toFixed(2)}`);
+        }
+    }
+    useEffect(() => {
+        computeResult();
+    }, [base, input, target, currencies]);
 
     useEffect(() => {
+        computeResult();
         const fetchCurrencies = async () => {
-            const response = await axios.get(`?base=USD`);
+            setIsLoading(true);
+            const response = await axios.get(`?base=${base}`);
             setCurrencies(response.data);
-            console.log(response.data);
+            setOptions(Object.keys(response.data.rates).map(key => ({ value: key, text: key })));
+            setBase(base);
+            console.log(options);
+            setIsLoading(false);
         }
         fetchCurrencies();
-    }, []);
-    return (
-    <Card style={styles.card}>
-        <Card.Content>
+    }, [base]);
+    return (<Card style={styles.card}>
+        {isLoading ? <Loader active /> : <Card.Content>
             <div style={styles.inputContainer}>
                 <Input
-                    onChange={() => computeResult()}
                     value={input}
-                    error={isNaN(input)}
-                    onChange={(target, event) => { setInput(event.value); }} //eslint-disable-line
+                    error={!isValidInput()}
+                    onChange={(event, { value }) => { setInput(value); computeResult(); }} //eslint-disable-line
                     label={
                         <Dropdown
-                            defaultValue={options[0].value}
+                            value={base}
+                            onChange={(event, { value }) => {setBase(value); computeResult();} }
                             search
                             options={options}
                         />
@@ -88,15 +82,16 @@ const Converter = () => {
                 />
                 <Icon color="grey" size="big" name="arrow alternate circle right outline" />
                 <Dropdown
+                    value={target}
+                    onChange={(event, { value }) => { setTarget(value); computeResult(); }}
                     button
-                    defaultValue='az'
                     search
                     options={options}
                 />
             </div>
         <Divider/>
         <h1>{result}</h1>
-        </Card.Content>
+        </Card.Content>}
     </Card>);
 }
 
