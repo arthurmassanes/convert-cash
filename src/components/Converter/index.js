@@ -64,6 +64,9 @@ const Converter = () => {
     }, [base]); //eslint-disable-line
     return (<Card style={styles.card}>
         {isLoading ? <Loader active /> : <Card.Content>
+        <Card.Header style={{ paddingBottom: 10 }}>currency converter by arthur massanes</Card.Header>
+        <Card.Meta>Select an amount, a base and a target to convert a currency</Card.Meta>
+        <Divider />
             <div style={styles.inputContainer}>
                 <Input
                     value={input}
