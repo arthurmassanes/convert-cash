@@ -19,7 +19,7 @@ const styles = {
       minHeight: 100,
       borderRadius: 40,
       padding: 80,
-      minWidth: 200,
+      minWidth: '50vh',
     },
     container: {
       paddingTop: '20%',
