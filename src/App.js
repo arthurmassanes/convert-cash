@@ -4,13 +4,6 @@ import './App.css';
 import Converter from './components/Converter';
 
 const styles = {
-  inputContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  card: {
-    width: 'auto'
-  },
   container: {
     paddingTop: '10%',
     display: 'flex',

@@ -11,9 +11,7 @@ html {
   height: 40vmin;
   pointer-events: none;
 }
-* {
-  font-family:Arial, Helvetica, sans-serif;
-}
+
 
 .App-header {
   min-height: 100vh;
