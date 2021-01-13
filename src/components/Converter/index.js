@@ -11,6 +11,8 @@ import {
 } from 'semantic-ui-react';
 import axios from 'axios';
 
+import fullCurrencyNames from '../../currencyNames';
+
 const styles = {
     inputContainer: {
       display: 'flex',
@@ -60,6 +62,13 @@ const Converter = () => {
             setResult(`${base} ${input || 0} = ${target} ${computedResult.toFixed(2) || 0}`);
         }
     }
+
+    const getFullCurrencyName = () => {
+        const fullBase = fullCurrencyNames[base] || base;
+        const fullTarget = fullCurrencyNames[target] || target;
+        return (`${fullBase} to ${fullTarget}`);
+    }
+
     useEffect(() => {
         computeResult();
     }, [base, input, target, currencies]); //eslint-disable-line
@@ -112,6 +121,7 @@ const Converter = () => {
                     options={options}
                 />
             </div>
+        <i>{getFullCurrencyName()}</i>
         <Divider/>
         <h1>{result}</h1>
         </Card.Content>}
